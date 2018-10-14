@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Principal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingVertical="20dp"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/poli" />
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/logoinsfidim" />
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/actualizar"
+            android:layout_height="wrap_content"
+            android:onClick="actualizar"
+            android:text="Actualizar"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/leer"
+            android:layout_height="wrap_content"
+            android:text="Leer" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:text="JUEGO DE OPUESTOS"
+        android:textStyle="bold"
+        android:fontFamily="serif-monospace"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:paddingVertical="10dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/nivel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NIVEL 1" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIVEL 2"
+            android:id="@+id/nivel2"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIVEL 3"
+            android:id="@+id/nivel3"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
