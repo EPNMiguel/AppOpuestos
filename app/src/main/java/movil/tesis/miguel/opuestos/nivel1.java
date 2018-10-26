@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import movil.tesis.miguel.opuestos.leerJSON;
+
 
 import java.util.Locale;
 
@@ -24,7 +26,8 @@ public class nivel1 extends AppCompatActivity {
     public Button bt1;
     public ImageView image1, image2;
     public TextView txtimg1, txtimg2;
-    public String[] vectorimg = {"uno", "dos", "tres", "cuatro"};
+    public String[] vectorimg ;
+            //= {"photo_1539460772749","photo_1539460772787", "photo_1539460809873", "photo_1539460809883", "photo_1539460912650", "photo_1539460912748", "photo_1539461125331", "photo_1539461125359", "photo_1539461198012", "photo_1539461198068"  };
     public int nombreimg, i=0, id, id2;
     private TextToSpeech mTTS;
     public MediaPlayer felicitaciones;
@@ -36,6 +39,13 @@ public class nivel1 extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_nivel1);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        int largo = leerJSON.imagen.length;
+        vectorimg = new String[largo];
+        for (int k=0;k<5;k++){
+            vectorimg[i]= leerJSON.imagen[k];
+        }
+
 
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
