@@ -26,7 +26,7 @@ public class leerJSON extends AppCompatActivity {
     private ProgressDialog pDialog;
     String texto = "";
     String[] URL;
-    public static  String[] imagen = new String[50];
+    public static  String[] imagen = new String[10];
     Button cargar, mostrar;
 
     @Override
@@ -51,11 +51,7 @@ public class leerJSON extends AppCompatActivity {
                 mostrarJson();
             }
         });
-
-
     }
-
-
     public void mostrarJson() {
 
         try {
@@ -70,10 +66,10 @@ public class leerJSON extends AppCompatActivity {
             }
 
             for (int i = 0; i < imagen.length; i++) {
-                prueba += imagen[i];
+                prueba += imagen[i]+"\n";
             }
             txt.setText(prueba);
-            new DownloadFileFromURL().execute(imagen);
+
         } catch (Exception e) {
             Log.d("ReadPlacesFeedTask", e.getLocalizedMessage());
         }
@@ -81,85 +77,85 @@ public class leerJSON extends AppCompatActivity {
 
     }
 
-    class DownloadFileFromURL extends AsyncTask<String, String, String> {
-
-        /**
-         * Before starting background thread
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            System.out.println("Starting download");
-
-            pDialog = new ProgressDialog(leerJSON.this);
-            pDialog.setMessage("Descargando... Por favor espere...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        /**
-         * Downloading file in background thread
-         */
-        @Override
-        protected String doInBackground(String... f_url) {
-            int count;
-            try {
-
-                System.out.println("Descargando");
-                URL url = new URL(f_url[0]);
-
-                URLConnection conection = url.openConnection();
-                conection.connect();
-                // getting file length
-                int lenghtOfFile = conection.getContentLength();
-
-                // input stream to read file - with 8k buffer
-                InputStream input = new BufferedInputStream(url.openStream(), 15360);
-
-                // Output stream to write file
-                for (int i = 0; i < 1; i++) {
-
-
-                    OutputStream output = openFileOutput("imagen"+i+".png", Context.MODE_PRIVATE);
-                    output.write(imagen[i].getBytes());
-                    byte data[] = new byte[7000];
-
-                    long total = 0;
-                    while ((count = input.read(data)) != -1) {
-                        total += count;
-
-                        // writing data to file
-                        output.write(data, 0, count);
-
-                    }
-
-                    // flushing output
-                    output.flush();
-
-//                    // closing streams
-//                    output.close();
-//                    input.close();
-                }
-
-            } catch (Exception e) {
-                Log.e("Error: ", e.getMessage()+"falló la descarga PTM");
-            }
-
-            return null;
-        }
-
-
-        /**
-         * After completing background task
-         **/
-        @Override
-        protected void onPostExecute(String file_url) {
-            System.out.println(imagen.length+" Imagenes descargadas");
-
-            pDialog.dismiss();
-        }
-
-    }
+//    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+//
+//        /**
+//         * Before starting background thread
+//         */
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            System.out.println("Starting download");
+//
+//            pDialog = new ProgressDialog(leerJSON.this);
+//            pDialog.setMessage("Descargando... Por favor espere...");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
+//        }
+//
+//        /**
+//         * Downloading file in background thread
+//         */
+//        @Override
+//        protected String doInBackground(String... f_url) {
+//            int count;
+//            try {
+//
+//                System.out.println("Descargando");
+//                URL url = new URL(f_url[0]);
+//
+//                URLConnection conection = url.openConnection();
+//                conection.connect();
+//                // getting file length
+//                int lenghtOfFile = conection.getContentLength();
+//
+//                // input stream to read file - with 8k buffer
+//                InputStream input = new BufferedInputStream(url.openStream(), 15360);
+//
+//                // Output stream to write file
+//                for (int i = 0; i < 1; i++) {
+//
+//
+//                    OutputStream output = openFileOutput("imagen"+i+".png", Context.MODE_PRIVATE);
+//                    output.write(imagen[i].getBytes());
+//                    byte data[] = new byte[7000];
+//
+//                    long total = 0;
+//                    while ((count = input.read(data)) != -1) {
+//                        total += count;
+//
+//                        // writing data to file
+//                        output.write(data, 0, count);
+//
+//                    }
+//
+//                    // flushing output
+//                    output.flush();
+//
+////                    // closing streams
+////                    output.close();
+////                    input.close();
+//                }
+//
+//            } catch (Exception e) {
+//                Log.e("Error: ", e.getMessage()+"falló la descarga PTM");
+//            }
+//
+//            return null;
+//        }
+//
+//
+//        /**
+//         * After completing background task
+//         **/
+//        @Override
+//        protected void onPostExecute(String file_url) {
+//            System.out.println(imagen.length+" Imagenes descargadas");
+//
+//            pDialog.dismiss();
+//        }
+//
+//    }
 
 }

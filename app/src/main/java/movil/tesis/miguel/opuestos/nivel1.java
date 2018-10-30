@@ -2,11 +2,13 @@ package movil.tesis.miguel.opuestos;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import movil.tesis.miguel.opuestos.leerJSON;
-
-
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Locale;
 
 public class nivel1 extends AppCompatActivity {
@@ -26,9 +29,10 @@ public class nivel1 extends AppCompatActivity {
     public Button bt1;
     public ImageView image1, image2;
     public TextView txtimg1, txtimg2;
-    public String[] vectorimg ;
-            //= {"photo_1539460772749","photo_1539460772787", "photo_1539460809873", "photo_1539460809883", "photo_1539460912650", "photo_1539460912748", "photo_1539461125331", "photo_1539461125359", "photo_1539461198012", "photo_1539461198068"  };
-    public int nombreimg, i=0, id, id2;
+    public String[] arrayNombres = new String[10] ;
+    String texto = "";
+    public String[] imagen = new String[10];
+    public int i=0, id, id2;
     private TextToSpeech mTTS;
     public MediaPlayer felicitaciones;
 
@@ -40,14 +44,34 @@ public class nivel1 extends AppCompatActivity {
         setContentView(R.layout.activity_nivel1);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        int largo = leerJSON.imagen.length;
-        vectorimg = new String[largo];
-        for (int k=0;k<5;k++){
-            vectorimg[i]= leerJSON.imagen[k];
+        try {
+            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("opuestos.JSON")));
+            texto = fin.readLine();
+            fin.close();
+        } catch (Exception ex) {
+            Log.e("Ficheros", "Error al leer fichero opuestos.JSON desde memoria interna");
+        }
+        try {
+            JSONArray opuesto = new JSONArray(texto);
+            String prueba = "";
+
+            for (int i = 0; i < opuesto.length(); i++) {
+                JSONObject img = opuesto.getJSONObject(i);
+                imagen[i] = img.getString("nombre_im1");
+                imagen[i]=imagen[i].substring(0,imagen[i].lastIndexOf("."));
+                imagen[i + 1] = img.getString("nombre_im2");
+                imagen[i+1]=imagen[i+1].substring(0,imagen[i+1].lastIndexOf("."));
+                arrayNombres[i]=img.getString("opuesto_im1");
+                arrayNombres[i+1]=img.getString("opuesto_im2");
+                i++;
+            }
+
+        } catch (Exception e) {
+            Log.d("ReadPlacesFeedTask", e.getLocalizedMessage());
         }
 
 
-        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+             mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
@@ -65,17 +89,17 @@ public class nivel1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 i=i+2;
-                if (i < vectorimg.length) {
+                if (i < imagen.length) {
                     image1 = (ImageView) findViewById(R.id.imgcambio);
                     image2 = (ImageView) findViewById(R.id.imgcambio2);
                     txtimg1 = (TextView) findViewById(R.id.txtcambio);
                     txtimg2 = (TextView) findViewById(R.id.txtcambio2);
-                    id = getResources().getIdentifier(vectorimg[i], "drawable", getPackageName());
-                    id2 = getResources().getIdentifier(vectorimg[i+1], "drawable", getPackageName());
+                    id = getResources().getIdentifier(imagen[i], "drawable", getPackageName());
+                    id2 = getResources().getIdentifier(imagen[i+1], "drawable", getPackageName());
                     image1.setImageResource(id);
-                    txtimg1.setText(vectorimg[i]);
+                    txtimg1.setText(arrayNombres[i]);
                     image2.setImageResource(id2);
-                    txtimg2.setText(vectorimg[i+1]);
+                    txtimg2.setText(arrayNombres[i+1]);
 
                 } else {
                     termino();
@@ -87,7 +111,7 @@ public class nivel1 extends AppCompatActivity {
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTTS.speak(vectorimg[i], TextToSpeech.QUEUE_FLUSH, null);
+                mTTS.speak(arrayNombres[i], TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
@@ -95,7 +119,7 @@ public class nivel1 extends AppCompatActivity {
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTTS.speak(vectorimg[i+1], TextToSpeech.QUEUE_FLUSH, null);
+                mTTS.speak(arrayNombres[i+1], TextToSpeech.QUEUE_FLUSH, null);
             }
         });
     }
