@@ -7,10 +7,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,11 +22,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Principal extends AppCompatActivity {
 
     public Button n1, n2, act, leer;
+    public static final String URL = "http://www.thebiblescholar.com/android_awesome.jpg";
+
     ProgressDialog pd;
+
 
 
     @Override
@@ -59,6 +69,8 @@ public class Principal extends AppCompatActivity {
             }
         });
 
+        CargaImagenes nuevaTarea = new CargaImagenes();
+        nuevaTarea.execute(URL);
     }
 
     public void actualizar(View view) {
@@ -188,4 +200,47 @@ public class Principal extends AppCompatActivity {
 //            }
 //        }
 //    }
+
+    private class CargaImagenes extends AsyncTask< String, Void, Bitmap>{
+
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+
+            pDialog = new ProgressDialog(Principal.this);
+            pDialog.setMessage("Cargando Imagen");
+            pDialog.setCancelable(false);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            String url = params[0];
+            Bitmap imagen = descargarImagen(url);
+            return imagen;
+        }
+
+
+    }
+
+    private Bitmap descargarImagen (String imageHttpAddress){
+        URL imageUrl = null;
+        Bitmap imagen = null;
+        try{
+            imageUrl = new URL(imageHttpAddress);
+            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+            conn.connect();
+            imagen = BitmapFactory.decodeStream(conn.getInputStream());
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+
+        return imagen;
+    }
 }
