@@ -29,14 +29,15 @@
             android:layout_width="wrap_content"
             android:id="@+id/actualizar"
             android:layout_height="wrap_content"
-            android:onClick="actualizar"
             android:text="Actualizar"
             />
         <Button
             android:layout_width="wrap_content"
-            android:id="@+id/leer"
+            android:id="@+id/descargarImg"
             android:layout_height="wrap_content"
-            android:text="Leer" />
+            android:text="descargar imágenes "
+            />
+
     </LinearLayout>
 
     <TextView

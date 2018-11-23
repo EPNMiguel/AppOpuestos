@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -17,26 +18,36 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import org.json.JSONObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Principal extends AppCompatActivity {
 
-    public Button n1, n2, act, leer;
-    public String[] arrayNombres = new String[10] ;
-    String texto = "";
+    public Button n1, n2, n3, act, descargar;
+    public String[] arrayNombres = new String[10];
+    public String[] arrayURL = new String[10];
+    String texto = null;
+    public ProgressDialog pd, pDialog;
+    ;
     public String[] imagen = new String[10];
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,28 +56,6 @@ public class Principal extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_principal);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        try {
-            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("opuestos.JSON")));
-            texto = fin.readLine();
-            fin.close();
-        } catch (Exception ex) {
-            Log.e("Ficheros", "Error al leer fichero opuestos.JSON desde memoria interna");
-        }
-        try {
-            JSONArray opuesto = new JSONArray(texto);
-            String prueba = "";
-
-            for (int i = 0; i < opuesto.length(); i++) {
-                JSONObject img = opuesto.getJSONObject(i);
-                arrayNombres[i]=img.getString("opuesto_im1");
-                arrayNombres[i+1]=img.getString("opuesto_im2");
-                i++;
-            }
-
-        } catch (Exception e) {
-            Log.d("ReadPlacesFeedTask", e.getLocalizedMessage());
-        }
 
         n1 = (Button) findViewById(R.id.nivel1);
         n1.setOnClickListener(new View.OnClickListener() {
@@ -84,27 +73,41 @@ public class Principal extends AppCompatActivity {
                 startActivity(cambiarnivel2);
             }
         });
+        n3 = (Button) findViewById(R.id.nivel3);
+        n3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cambiarnivel3 = new Intent(Principal.this, nivel3.class);
+                startActivity(cambiarnivel3);
+            }
+        });
         act = (Button) findViewById(R.id.actualizar);
         act.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            actualizar();
+                actualizar();
             }
         });
-
-        leer = (Button) findViewById(R.id.leer);
-        leer.setOnClickListener(new View.OnClickListener() {
+        act = (Button)findViewById(R.id.descargarImg);
+        act.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cambiarleer = new Intent(Principal.this, leerJSON.class);
-                startActivity(cambiarleer);
+                //Carga las imágenes desde el Array URL
+                try {
+                    for (int i = 0; i < arrayURL.length; i++) {
+                        Picasso.get().load(arrayURL[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres[i] + ".png"));
+                        progressBar.setProgress((i / arrayURL.length) * 100);
+                    }
+                }catch (Exception e){
+                    Log.e ("descarga: ", "error en picasso");
+
+                }
             }
         });
-
-
     }
 
     public void actualizar() {
+
         ConnectivityManager cm;
         NetworkInfo ni;
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -115,10 +118,8 @@ public class Principal extends AppCompatActivity {
         if (ni != null) {
             ConnectivityManager connManager1 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mWifi = connManager1.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
             ConnectivityManager connManager2 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mMobile = connManager2.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
             if (mWifi.isConnected()) {
                 tipoConexion1 = true;
             }
@@ -126,159 +127,151 @@ public class Principal extends AppCompatActivity {
                 tipoConexion2 = true;
             }
             if (tipoConexion1 == true || tipoConexion2 == true) {
-                //   new JsonTask().execute("http://opuestos-miguel-94.c9users.io:8081/api/usuarios");
 
-                //BORRAR cuando ya se carguen los archivos desde la base, para eso debo descomentar  la línea de arriba
-                String filename1 = "usuarios.JSON";
-                String filename2 = "opuestos.JSON";
-                String string1 = "[{\"opuestos\":[{\"_id\":\"5b9e8f5c1b841230486c154b\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539460772749.jpg\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539460772787.png\",\"nombre_im1\":\"photo_1539460772749.jpg\",\"nombre_im2\":\"photo_1539460772787.png\",\"opuesto_im1\":\"noche\",\"opuesto_im2\":\"día\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0},{\"_id\":\"5b9ec5dd173811241c839385\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539460809873.jpg\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539460809883.png\",\"nombre_im1\":\"photo_1539460809873.jpg\",\"nombre_im2\":\"photo_1539460809883.png\",\"opuesto_im1\":\"gato\",\"opuesto_im2\":\"perro\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0},{\"_id\":\"5bc24f30da4edc1a6449e1c2\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539460912650.png\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539460912748.png\",\"nombre_im1\":\"photo_1539460912650.png\",\"nombre_im2\":\"photo_1539460912748.png\",\"opuesto_im1\":\"ángel\",\"opuesto_im2\":\"demonio\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0}],\"_id\":\"5b9e8157602e1e4304bebaec\",\"username\":\"lein11\",\"email\":\"lennyesteban@hotmail.com\",\"password\":\"epn123\",\"__v\":3},{\"opuestos\":[{\"_id\":\"5b9e904e3633804294f1d1c1\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461125331.png\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461125359.jpg\",\"nombre_im1\":\"photo_1539461125331.png\",\"nombre_im2\":\"photo_1539461125359.jpg\",\"opuesto_im1\":\"pareja\",\"opuesto_im2\":\"singular\",\"usuario\":\"5b9e90263633804294f1d1c0\",\"__v\":0},{\"_id\":\"5b9e90fc3633804294f1d1c3\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461198012.jpg\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461198068.png\",\"nombre_im1\":\"photo_1539461198012.jpg\",\"nombre_im2\":\"photo_1539461198068.png\",\"opuesto_im1\":\"azul\",\"opuesto_im2\":\"rojo\",\"usuario\":\"5b9e90263633804294f1d1c0\",\"__v\":0}],\"_id\":\"5b9e90263633804294f1d1c0\",\"username\":\"lein2\",\"email\":\"lennydan2@gmail.com\",\"password\":\"qwerty\",\"__v\":2},{\"opuestos\":[{\"_id\":\"5ba448824a13292174d42d99\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461352529.jpg\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461352555.png\",\"nombre_im1\":\"photo_1539461352529.jpg\",\"nombre_im2\":\"photo_1539461352555.png\",\"opuesto_im1\":\"animal\",\"opuesto_im2\":\"persona\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5ba463304877863ab4b0313f\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461375303.jpg\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461375343.png\",\"nombre_im1\":\"photo_1539461375303.jpg\",\"nombre_im2\":\"photo_1539461375343.png\",\"opuesto_im1\":\"dos\",\"opuesto_im2\":\"uno\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5bc2516bda4edc1a6449e1c4\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461483489.png\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461483513.jpg\",\"nombre_im1\":\"photo_1539461483489.png\",\"nombre_im2\":\"photo_1539461483513.jpg\",\"opuesto_im1\":\"muchos\",\"opuesto_im2\":\"pocos\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5bc252bada4edc1a6449e1c5\",\"url_im1\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461818486.jpg\",\"url_im2\":\"http://opuestos-miguel-94.c9users.io:8081/upload/photo_1539461818511.jpg\",\"nombre_im1\":\"photo_1539461818486.jpg\",\"nombre_im2\":\"photo_1539461818511.jpg\",\"opuesto_im1\":\"sentado\",\"opuesto_im2\":\"parado\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0}],\"_id\":\"5ba07172d84b8f0a9484e354\",\"username\":\"lein93\",\"email\":\"lennydan@yahoo.com\",\"password\":\"asdf123\",\"__v\":16}]";
-                String string2 = "[{\"_id\":\"5b9e8f5c1b841230486c154b\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539460772749.jpg\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539460772787.png\",\"nombre_im1\":\"photo_1539460772749.jpg\",\"nombre_im2\":\"photo_1539460772787.png\",\"opuesto_im1\":\"noche\",\"opuesto_im2\":\"día\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0},{\"_id\":\"5b9e904e3633804294f1d1c1\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461125331.png\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461125359.jpg\",\"nombre_im1\":\"photo_1539461125331.png\",\"nombre_im2\":\"photo_1539461125359.jpg\",\"opuesto_im1\":\"pareja\",\"opuesto_im2\":\"singular\",\"usuario\":\"5b9e90263633804294f1d1c0\",\"__v\":0},{\"_id\":\"5b9e90fc3633804294f1d1c3\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461198012.jpg\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461198068.png\",\"nombre_im1\":\"photo_1539461198012.jpg\",\"nombre_im2\":\"photo_1539461198068.png\",\"opuesto_im1\":\"azul\",\"opuesto_im2\":\"rojo\",\"usuario\":\"5b9e90263633804294f1d1c0\",\"__v\":0},{\"_id\":\"5b9ec5dd173811241c839385\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539460809873.jpg\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539460809883.png\",\"nombre_im1\":\"photo_1539460809873.jpg\",\"nombre_im2\":\"photo_1539460809883.png\",\"opuesto_im1\":\"gato\",\"opuesto_im2\":\"perro\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0},{\"_id\":\"5ba448824a13292174d42d99\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461352529.jpg\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461352555.png\",\"nombre_im1\":\"photo_1539461352529.jpg\",\"nombre_im2\":\"photo_1539461352555.png\",\"opuesto_im1\":\"animal\",\"opuesto_im2\":\"persona\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5ba463304877863ab4b0313f\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461375303.jpg\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461375343.png\",\"nombre_im1\":\"photo_1539461375303.jpg\",\"nombre_im2\":\"photo_1539461375343.png\",\"opuesto_im1\":\"dos\",\"opuesto_im2\":\"uno\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5bc24f30da4edc1a6449e1c2\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539460912650.png\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539460912748.png\",\"nombre_im1\":\"photo_1539460912650.png\",\"nombre_im2\":\"photo_1539460912748.png\",\"opuesto_im1\":\"ángel\",\"opuesto_im2\":\"demonio\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0},{\"_id\":\"5bc2516bda4edc1a6449e1c4\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461483489.png\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461483513.jpg\",\"nombre_im1\":\"photo_1539461483489.png\",\"nombre_im2\":\"photo_1539461483513.jpg\",\"opuesto_im1\":\"muchos\",\"opuesto_im2\":\"pocos\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5bc252bada4edc1a6449e1c5\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461818486.jpg\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539461818511.jpg\",\"nombre_im1\":\"photo_1539461818486.jpg\",\"nombre_im2\":\"photo_1539461818511.jpg\",\"opuesto_im1\":\"sentado\",\"opuesto_im2\":\"parado\",\"usuario\":\"5ba07172d84b8f0a9484e354\",\"__v\":0},{\"_id\":\"5bc28385da4edc1a6449e1c7\",\"url_im1\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539474309528.png\",\"url_im2\":\"https://opuestos-miguel-94.c9users.io/app/images/upload/photo_1539474309553.jpg\",\"nombre_im1\":\"photo_1539474309528.png\",\"nombre_im2\":\"photo_1539474309553.jpg\",\"opuesto_im1\":\"ssss\",\"opuesto_im2\":\"ffff\",\"usuario\":\"5b9e8157602e1e4304bebaec\",\"__v\":0}]";
-                FileOutputStream outputStream;
+                //***************************************************primer descarga JSON del server
+                new JsonTask().execute("http://opuestos-miguel-94.c9users.io:8081/api/usuarios");
 
+                //*****************************ahora con el JSON descargado separa los nombres y las URL y los guarda en arreglos
                 try {
-                    outputStream = openFileOutput(filename1, Context.MODE_PRIVATE);
-                    outputStream.write(string1.getBytes());
-                    outputStream = openFileOutput(filename2, Context.MODE_PRIVATE);
-                    outputStream.write(string2.getBytes());
-                    outputStream.close();
+                    BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("opuestos.JSON")));
+                    texto = fin.readLine();
+                    fin.close();
+                } catch (Exception ex) {
+                    Log.e("Ficheros", "Error al leer fichero jsonweb.JSON desde memoria interna");
+                    Log.e("ReadPlacesFeedTask", ex.getLocalizedMessage());
+                }
+                try {
+                    JSONArray opuesto = new JSONArray(texto);
+
+                    for (int i = 0; i < opuesto.length(); i++) {
+                        JSONObject img = opuesto.getJSONObject(i);
+                        arrayURL[i] = img.getString("url_im1");
+                        arrayURL[i + 1] = img.getString("url_im2");
+                        arrayNombres[i] = img.getString("opuesto_im1");
+                        arrayNombres[i + 1] = img.getString("opuesto_im2");
+                        i++;
+
+                    }
+
+
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d("ReadPlacesFeedTask", e.getLocalizedMessage());
+
                 }
 
 
-                Toast.makeText(this, "SÍ tiene internet, Y SE DESCARGA EL ARCHIVO", Toast.LENGTH_SHORT).show();
-//                for(int k=0; k<arrayNombres.length;k++) {
-//                    CargaImagenes nuevaTarea = new CargaImagenes();
-//                    nuevaTarea.execute(arrayNombres[k]);
-//                }
-                CargaImagenes nuevaTarea = new CargaImagenes();
-                  nuevaTarea.execute(arrayNombres[0]);
+
             }
         } else {
             Toast.makeText(this, "NO tiene internet", Toast.LENGTH_SHORT).show();
         }
     }
 
-    {
-    }
-
-//    private class JsonTask extends AsyncTask <String,String,String>{
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//
-//            pd = new ProgressDialog(Principal.this);
-//            pd.setMessage("Descargando... por favor espere");
-//            pd.setCancelable(false);
-//            pd.show();
-//        }
-//
-//        protected String doInBackground(String... params) {
-//
-//
-//            HttpURLConnection connection = null;
-//            BufferedReader reader = null;
-//
-//            try {
-//                URL url = new URL(params[0]);
-//                connection = (HttpURLConnection) url.openConnection();
-//                connection.connect();
-//                InputStream stream = connection.getInputStream();
-//                reader = new BufferedReader(new InputStreamReader(stream));
-//
-//                StringBuffer buffer = new StringBuffer();
-//                String line = "";
-//
-//                while ((line = reader.readLine()) != null) {
-//                    buffer.append(line+"\n");
-//                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-//
-//                }
-//
-//                return buffer.toString();
-//
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (connection != null) {
-//                    connection.disconnect();
-//                }
-//                try {
-//                    if (reader != null) {
-//                        reader.close();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//            if (pd.isShowing()){
-//                pd.dismiss();
-//            }
-//            String filename = "jsonweb.JSON";
-//            String string = result;
-//            FileOutputStream outputStream;
-//
-//            try {
-//                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-//                outputStream.write(string.getBytes());
-//                outputStream.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-    private class CargaImagenes extends AsyncTask<String, Void, Bitmap> {
-
-        ProgressDialog pDialog;
-
-        @Override
+    private class JsonTask extends AsyncTask<String, String, String> {
         protected void onPreExecute() {
-            // TODO Auto-generated method stub
             super.onPreExecute();
+            pd = new ProgressDialog(Principal.this);
+            pd.setMessage("Descargando... por favor espere");
+            pd.setCancelable(false);
+            pd.show();
+        }
 
-            pDialog = new ProgressDialog(Principal.this);
-            pDialog.setMessage("Cargando Imagen");
-            pDialog.setCancelable(true);
-            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            pDialog.show();
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
 
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+                return buffer.toString();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         }
 
         @Override
-        protected Bitmap doInBackground(String... params) {
-            // TODO Auto-generated method stub
-            String url = params[0];
-            Bitmap imagen = descargarImagen(url);
-            return imagen;
-
-
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (pd.isShowing()) {
+                pd.dismiss();
+            }
+            String filename = "opuestos.JSON";
+            String string = result;
+            FileOutputStream outputStream;
+            try {
+                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                outputStream.write(string.getBytes());
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-
     }
 
-    private Bitmap descargarImagen(String imageHttpAddress) {
-        URL imageUrl = null;
-        Bitmap imagen = null;
-        try {
-            imageUrl = new URL(imageHttpAddress);
-            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
-            conn.connect();
-            imagen = BitmapFactory.decodeStream(conn.getInputStream());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
+        Log.d("picassoImageTarget", " picassoImageTarget");
+        ContextWrapper cw = new ContextWrapper(context);
+        final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE); // path to /data/data/yourapp/app_imageDir
+        return new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final File myImageFile = new File(directory, imageName); // Create image file
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(myImageFile);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            try {
+                                fos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Log.i("image", "image saved to >>>" + myImageFile.getAbsolutePath());
 
-        return imagen;
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                if (placeHolderDrawable != null) {
+                }
+            }
+        };
     }
 
 
