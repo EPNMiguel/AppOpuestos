@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
 import org.json.JSONObject;
 
 import org.json.JSONArray;
@@ -43,7 +44,7 @@ public class Principal extends AppCompatActivity {
     public Button n1, n2, n3, act, descargar;
     public String[] arrayNombres = new String[10];
     public String[] arrayURL = new String[10];
-    String texto = null;
+    String texto = "";
     public ProgressDialog pd, pDialog;
     ;
     public String[] imagen = new String[10];
@@ -88,22 +89,23 @@ public class Principal extends AppCompatActivity {
                 actualizar();
             }
         });
-        act = (Button)findViewById(R.id.descargarImg);
-        act.setOnClickListener(new View.OnClickListener() {
+        descargar = (Button) findViewById(R.id.descargarImg);
+        descargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Carga las imágenes desde el Array URL
                 try {
                     for (int i = 0; i < arrayURL.length; i++) {
                         Picasso.get().load(arrayURL[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres[i] + ".png"));
-                        progressBar.setProgress((i / arrayURL.length) * 100);
                     }
-                }catch (Exception e){
-                    Log.e ("descarga: ", "error en picasso");
+                } catch (Exception e) {
+                    Log.e("descarga: ", "error en picasso");
 
                 }
+
+
             }
         });
+
     }
 
     public void actualizar() {
@@ -129,7 +131,7 @@ public class Principal extends AppCompatActivity {
             if (tipoConexion1 == true || tipoConexion2 == true) {
 
                 //***************************************************primer descarga JSON del server
-                new JsonTask().execute("http://opuestos-miguel-94.c9users.io:8081/api/usuarios");
+                new JsonTask().execute("http://opuestos-miguel-94.c9users.io:8081/api/opuestos");
 
                 //*****************************ahora con el JSON descargado separa los nombres y las URL y los guarda en arreglos
                 try {
@@ -141,25 +143,20 @@ public class Principal extends AppCompatActivity {
                     Log.e("ReadPlacesFeedTask", ex.getLocalizedMessage());
                 }
                 try {
-                    JSONArray opuesto = new JSONArray(texto);
-
-                    for (int i = 0; i < opuesto.length(); i++) {
+                    JSONObject obj = new JSONObject("{\"opuestos\":" + texto + "}");
+                    JSONArray opuesto = obj.getJSONArray("opuestos");
+                    int n = opuesto.length();
+                    for (int i = 0; i < n*2; i++) {
                         JSONObject img = opuesto.getJSONObject(i);
                         arrayURL[i] = img.getString("url_im1");
                         arrayURL[i + 1] = img.getString("url_im2");
                         arrayNombres[i] = img.getString("opuesto_im1");
                         arrayNombres[i + 1] = img.getString("opuesto_im2");
                         i++;
-
                     }
-
-
                 } catch (Exception e) {
-                    Log.d("ReadPlacesFeedTask", e.getLocalizedMessage());
-
+                    Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());
                 }
-
-
 
             }
         } else {
