@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,11 +43,13 @@ import java.net.URL;
 public class Principal extends AppCompatActivity {
 
     public Button n1, n2, n3, act, descargar;
-    public String[] arrayNombres = new String[10];
-    public String[] arrayURL = new String[10];
+    public String[] arrayNombres1 = new String[20];
+    public String[] arrayURL1 = new String[20];
+    public String[] arrayNombres2 = new String[20];
+    public String[] arrayURL2 = new String[20];
     String texto = "";
     public ProgressDialog pd, pDialog;
-    ;
+
     public String[] imagen = new String[10];
     private ProgressBar progressBar;
 
@@ -94,8 +97,9 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    for (int i = 0; i < arrayURL.length; i++) {
-                        Picasso.get().load(arrayURL[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres[i] + ".png"));
+                    for (int i = 0; i < arrayURL1.length; i++) {
+                        Picasso.get().load(arrayURL1[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres1[i] + ".png"));
+                        Picasso.get().load(arrayURL2[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres2[i] + ".png"));
                     }
                 } catch (Exception e) {
                     Log.e("descarga: ", "error en picasso");
@@ -146,13 +150,12 @@ public class Principal extends AppCompatActivity {
                     JSONObject obj = new JSONObject("{\"opuestos\":" + texto + "}");
                     JSONArray opuesto = obj.getJSONArray("opuestos");
                     int n = opuesto.length();
-                    for (int i = 0; i < n*2; i++) {
+                    for (int i = 1; i < n; i++) {
                         JSONObject img = opuesto.getJSONObject(i);
-                        arrayURL[i] = img.getString("url_im1");
-                        arrayURL[i + 1] = img.getString("url_im2");
-                        arrayNombres[i] = img.getString("opuesto_im1");
-                        arrayNombres[i + 1] = img.getString("opuesto_im2");
-                        i++;
+                        arrayURL1[i] = img.getString("url_im1");
+                        arrayURL2[i] = img.getString("url_im2");
+                        arrayNombres1[i] = img.getString("opuesto_im1");
+                        arrayNombres2[i] = img.getString("opuesto_im2");
                     }
                 } catch (Exception e) {
                     Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());

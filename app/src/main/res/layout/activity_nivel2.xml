@@ -24,8 +24,7 @@
             android:id="@+id/par1"
             android:layout_width="220dp"
             android:layout_height="220dp"
-            android:layout_gravity="center"
-            android:src="@drawable/uno"/>
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/txtpar1"
@@ -33,8 +32,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:gravity="center"
-            android:textSize="20sp"
-            android:text="uno"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,8 +48,7 @@
                 android:id="@+id/par2"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:layout_gravity="center"
-                android:src="@drawable/uno"/>
+                android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/txtpar2"
@@ -59,8 +56,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:clickable="true"
-                android:textSize="20sp"
-                android:text="uno"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -72,8 +68,7 @@
                 android:id="@+id/distractor1"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:layout_gravity="center"
-                android:src="@drawable/dos"/>
+                android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/txtdistractor1"
@@ -81,8 +76,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:clickable="true"
-                android:textSize="20sp"
-                android:text="dos"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -100,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="CAMBIO" />
+            android:text="EMPEZAR" />
     </LinearLayout>
 
 </LinearLayout>

@@ -18,10 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
@@ -31,11 +34,10 @@ public class nivel2 extends AppCompatActivity {
     public TextView txtpar1, txtpar2, txtdistractor1;
     private TextToSpeech mTTS;
     public MediaPlayer felicitaciones;
-    public String texto="";
-    public String[] imagen = new String[10];
-    public String[] arrayNombres = new String[10] ;
-    //public String[] vectorimg ;
-    public int i=0, id1,id2,idd;
+    public String texto = "";
+    public String[] arrayNombres1 = new String[20];
+    public String[] arrayNombres2 = new String[20];
+    public int i = 0;
     public Button bt1;
 
     @Override
@@ -51,26 +53,22 @@ public class nivel2 extends AppCompatActivity {
             texto = fin.readLine();
             fin.close();
         } catch (Exception ex) {
-            Log.e("Ficheros", "Error al leer fichero opuestos.JSON desde memoria interna");
+            Log.e("Ficheros", "Error al leer fichero jsonweb.JSON desde memoria interna");
+            Log.e("ReadPlacesFeedTask", ex.getLocalizedMessage());
         }
         try {
-            JSONArray opuesto = new JSONArray(texto);
-            String prueba = "";
-
-            for (int i = 0; i < opuesto.length(); i++) {
+            JSONObject obj = new JSONObject("{\"opuestos\":" + texto + "}");
+            JSONArray opuesto = obj.getJSONArray("opuestos");
+            int n = opuesto.length();
+            for (int i = 1; i < n; i++) {
                 JSONObject img = opuesto.getJSONObject(i);
-                imagen[i] = img.getString("nombre_im1");
-                imagen[i]=imagen[i].substring(0,imagen[i].lastIndexOf("."));
-                imagen[i + 1] = img.getString("nombre_im2");
-                imagen[i+1]=imagen[i+1].substring(0,imagen[i+1].lastIndexOf("."));
-                arrayNombres[i]=img.getString("opuesto_im1");
-                arrayNombres[i+1]=img.getString("opuesto_im2");
-                i++;
+                arrayNombres1[i] = img.getString("opuesto_im1");
+                arrayNombres2[i] = img.getString("opuesto_im2");
             }
-
         } catch (Exception e) {
-            Log.d("ReadPlacesFeedTask", e.getLocalizedMessage());
+            Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());
         }
+
 
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -89,61 +87,65 @@ public class nivel2 extends AppCompatActivity {
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                i=i+3;
-                if (i < imagen.length) {
-                    par1 = (ImageView) findViewById(R.id.par1);
-                    par2 = (ImageView) findViewById(R.id.par2);
-                    distractor1 = (ImageView)findViewById(R.id.distractor1);
-                    txtpar1 = (TextView) findViewById(R.id.txtpar1);
-                    txtpar2 = (TextView) findViewById(R.id.txtpar2);
-                    txtdistractor1 = (TextView)findViewById(R.id.txtdistractor1);
-                    id1 = getResources().getIdentifier(imagen[i], "drawable", getPackageName());
-                    id2 = getResources().getIdentifier(imagen[i+1], "drawable", getPackageName());
-                    idd =  getResources().getIdentifier(imagen[i+2], "drawable", getPackageName());
-                    par1.setImageResource(id1);
-                    txtpar1.setText(arrayNombres[i]);
-                    par2.setImageResource(id2);
-                    txtpar2.setText(arrayNombres[i+1]);
-                    distractor1.setImageResource(idd);
-                    txtdistractor1.setText(arrayNombres[i+2]);
-
-                } else {
-                    termino();
-                }
+                cargarImg();
             }
 
         });
 
-        txtpar1 = (TextView)findViewById(R.id.txtpar1) ;
+        txtpar1 = (TextView) findViewById(R.id.txtpar1);
         txtpar1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTTS.speak(arrayNombres[i], TextToSpeech.QUEUE_FLUSH, null);
+                mTTS.speak(arrayNombres1[i], TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
-        txtpar2 = (TextView)findViewById(R.id.txtpar2);
+        txtpar2 = (TextView) findViewById(R.id.txtpar2);
         txtpar2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTTS.speak(arrayNombres[i+1],TextToSpeech.QUEUE_FLUSH,null);
+                mTTS.speak(arrayNombres2[i], TextToSpeech.QUEUE_FLUSH, null);
             }
         });
-        juntar();
 
-        txtdistractor1 = (TextView)findViewById(R.id.txtdistractor1) ;
+
+        txtdistractor1 = (TextView) findViewById(R.id.txtdistractor1);
         txtdistractor1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTTS.speak(arrayNombres[i+2], TextToSpeech.QUEUE_FLUSH, null);
+                mTTS.speak(arrayNombres1[randomico(i)], TextToSpeech.QUEUE_FLUSH, null); //random excepto i
             }
         });
     }
 
-    private void juntar(){
 
+    public void cargarImg() {
+        bt1.setText("CAMBIAR");
+        i++;
+        if (arrayNombres1[i] != null) {
+            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(par1);
+            txtpar1.setText(arrayNombres1[i]);
+            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(par2);
+            txtpar2.setText(arrayNombres2[i]);
+            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(distractor1);
+            txtpar2.setText(arrayNombres1[3]);
+        } else {
+            termino();
+        }
     }
-    private void termino(){
+
+    public int randomico(int indice) {
+
+        int ran = 0;
+        ran = (int) (Math.random() * arrayNombres1.length) + 1;
+        if (ran == indice) {
+            randomico(indice);
+        } else {
+            return ran;
+        }return  ran;
+    }
+
+    private void termino() {
         par1.setImageResource(R.color.blanco);
         par1.setEnabled(false);
         par2.setEnabled(false);
