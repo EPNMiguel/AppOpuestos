@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -37,7 +38,7 @@ public class nivel1 extends AppCompatActivity {
     public String[] arrayNombres1 = new String[20];
     public String[] arrayNombres2 = new String[20];
     public MediaPlayer felicitaciones;
-    public int i =0;
+    public int i = 0;
 
     private TextToSpeech mTTS;
 
@@ -82,12 +83,12 @@ public class nivel1 extends AppCompatActivity {
                 }
             }
         });
-        imagenizquierda = (ImageView)findViewById(R.id.imgcambio);
-        imagenderecha = (ImageView)findViewById(R.id.imgcambio2);
-        txtizquierda = (TextView)findViewById(R.id.txtcambio);
-        txtderecha = (TextView)findViewById(R.id.txtcambio2);
+        imagenizquierda = (ImageView) findViewById(R.id.imgcambio);
+        imagenderecha = (ImageView) findViewById(R.id.imgcambio2);
+        txtizquierda = (TextView) findViewById(R.id.txtcambio);
+        txtderecha = (TextView) findViewById(R.id.txtcambio2);
 
-        cargar =(Button)findViewById(R.id.btncambio);
+        cargar = (Button) findViewById(R.id.btncambio);
         cargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,19 +111,21 @@ public class nivel1 extends AppCompatActivity {
         });
 
     }
-    public void cargarImg(){
+
+    public void cargarImg() {
         cargar.setText("CAMBIAR");
         i++;
-        if( arrayNombres1[i]!=null) {
+        if (arrayNombres1[i] != null) {
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imagenizquierda);
             txtizquierda.setText(arrayNombres1[i]);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imagenderecha);
             txtderecha.setText(arrayNombres2[i]);
-        }else {
+        } else {
             termino();
         }
     }
-    private void termino(){
+
+    private void termino() {
         imagenizquierda.setImageResource(R.color.blanco);
         imagenizquierda.setEnabled(false);
         imagenderecha.setEnabled(false);

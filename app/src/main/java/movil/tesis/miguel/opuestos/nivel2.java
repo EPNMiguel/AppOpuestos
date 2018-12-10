@@ -30,7 +30,7 @@ import java.util.Locale;
 
 public class nivel2 extends AppCompatActivity {
 
-    public ImageView par1, par2, distractor1;
+    public ImageView imgpar1, imgpar2, imgdistractor;
     public TextView txtpar1, txtpar2, txtdistractor1;
     private TextToSpeech mTTS;
     public MediaPlayer felicitaciones;
@@ -83,6 +83,10 @@ public class nivel2 extends AppCompatActivity {
             }
         });
 
+        imgpar1 = (ImageView) findViewById(R.id.par1);
+        imgpar2 = (ImageView) findViewById(R.id.par2);
+        imgdistractor = (ImageView) findViewById(R.id.distractor1);
+
         bt1 = (Button) findViewById(R.id.btncambio);
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,30 +96,6 @@ public class nivel2 extends AppCompatActivity {
 
         });
 
-        txtpar1 = (TextView) findViewById(R.id.txtpar1);
-        txtpar1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTTS.speak(arrayNombres1[i], TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-
-        txtpar2 = (TextView) findViewById(R.id.txtpar2);
-        txtpar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTTS.speak(arrayNombres2[i], TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-
-
-        txtdistractor1 = (TextView) findViewById(R.id.txtdistractor1);
-        txtdistractor1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTTS.speak(arrayNombres1[randomico(i)], TextToSpeech.QUEUE_FLUSH, null); //random excepto i
-            }
-        });
     }
 
 
@@ -123,35 +103,36 @@ public class nivel2 extends AppCompatActivity {
         bt1.setText("CAMBIAR");
         i++;
         if (arrayNombres1[i] != null) {
-            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(par1);
-            txtpar1.setText(arrayNombres1[i]);
-            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(par2);
-            txtpar2.setText(arrayNombres2[i]);
-            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(distractor1);
-            txtpar2.setText(arrayNombres1[3]);
+            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imgpar1);
+          //  txtpar1.setText(arrayNombres1[i]);
+            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imgpar2);
+         //   txtpar2.setText(arrayNombres2[i]);
+//            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imgdistractor);
+//            txtpar2.setText(arrayNombres1[3]);
         } else {
             termino();
         }
     }
 
-    public int randomico(int indice) {
-
-        int ran = 0;
-        ran = (int) (Math.random() * arrayNombres1.length) + 1;
-        if (ran == indice) {
-            randomico(indice);
-        } else {
-            return ran;
-        }return  ran;
-    }
+//    public int randomico(int indice) {
+//
+//        int ran = 0;
+//        ran = (int) (Math.random() * arrayNombres1.length) + 1;
+//        if (ran == indice) {
+//            randomico(indice);
+//        } else {
+//            return ran;
+//        }
+//        return ran;
+//    }
 
     private void termino() {
-        par1.setImageResource(R.color.blanco);
-        par1.setEnabled(false);
-        par2.setEnabled(false);
-        par2.setImageResource(R.color.blanco);
-        distractor1.setImageResource(R.color.blanco);
-        distractor1.setEnabled(false);
+        imgpar1.setImageResource(R.color.blanco);
+        imgpar1.setEnabled(false);
+        imgpar2.setEnabled(false);
+        imgpar2.setImageResource(R.color.blanco);
+        imgdistractor.setImageResource(R.color.blanco);
+        imgdistractor.setEnabled(false);
         txtpar1.setText(null);
         txtpar2.setText(null);
         txtdistractor1.setText(null);
