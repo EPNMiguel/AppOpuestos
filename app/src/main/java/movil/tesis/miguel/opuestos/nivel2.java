@@ -86,6 +86,9 @@ public class nivel2 extends AppCompatActivity {
         imgpar1 = (ImageView) findViewById(R.id.par1);
         imgpar2 = (ImageView) findViewById(R.id.par2);
         imgdistractor = (ImageView) findViewById(R.id.distractor1);
+        txtpar1 = (TextView) findViewById(R.id.txtpar1);
+        txtpar2 = (TextView) findViewById(R.id.txtpar2);
+        txtdistractor1 = (TextView) findViewById(R.id.txtdistractor1);
 
         bt1 = (Button) findViewById(R.id.btncambio);
         bt1.setOnClickListener(new View.OnClickListener() {
@@ -103,28 +106,29 @@ public class nivel2 extends AppCompatActivity {
         bt1.setText("CAMBIAR");
         i++;
         if (arrayNombres1[i] != null) {
+            int random = randomico(i);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imgpar1);
-          //  txtpar1.setText(arrayNombres1[i]);
+            txtpar1.setText(arrayNombres1[i]);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imgpar2);
-         //   txtpar2.setText(arrayNombres2[i]);
-//            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imgdistractor);
-//            txtpar2.setText(arrayNombres1[3]);
+            txtpar2.setText(arrayNombres2[i]);
+            Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[random] + ".png")).into(imgdistractor);
+            txtdistractor1.setText(arrayNombres2[random]);
         } else {
             termino();
         }
     }
 
-//    public int randomico(int indice) {
-//
-//        int ran = 0;
-//        ran = (int) (Math.random() * arrayNombres1.length) + 1;
-//        if (ran == indice) {
-//            randomico(indice);
-//        } else {
-//            return ran;
-//        }
-//        return ran;
-//    }
+    public int randomico(int indice) {
+
+        int ran = 0;
+        ran = (int) (Math.random() * 3) + 1;
+        if (ran == indice) {
+            randomico(indice);
+        } else {
+            return ran;
+        }
+        return ran;
+    }
 
     private void termino() {
         imgpar1.setImageResource(R.color.blanco);

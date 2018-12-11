@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -27,12 +28,13 @@ import java.io.InputStreamReader;
 
 public class nivel3 extends AppCompatActivity {
     ImageView imagenizquierda, imagenderecha;
+    TextView txtuno, txtdos, txttres, txtcuatro, txtcinco;
     Button cargar;
     String texto = "";
     public String[] arrayNombres1 = new String[20];
     public String[] arrayNombres2 = new String[20];
     public MediaPlayer felicitaciones;
-    public int i =0;
+    public int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,14 @@ public class nivel3 extends AppCompatActivity {
             Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());
         }
 
-        imagenizquierda = (ImageView)findViewById(R.id.ImgView31);
-        imagenderecha = (ImageView)findViewById(R.id.ImgView32);
-        cargar =(Button)findViewById(R.id.btncargarImagen3);
+        imagenizquierda = (ImageView) findViewById(R.id.imgcambio);
+        imagenderecha = (ImageView) findViewById(R.id.imgcambio2);
+        txtuno = (TextView) findViewById(R.id.txtuno);
+        txtdos = (TextView) findViewById(R.id.txtdos);
+        txttres = (TextView) findViewById(R.id.txttres);
+        txtcuatro = (TextView) findViewById(R.id.txtcuatro);
+        txtcinco = (TextView) findViewById(R.id.txtcinco);
+        cargar = (Button) findViewById(R.id.btncambio);
         cargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,22 +82,46 @@ public class nivel3 extends AppCompatActivity {
 
 
     }
-    public void cargarImg(){
+
+    public void cargarImg() {
         i++;
-        if( arrayNombres1[i]!=null) {
+        if (arrayNombres1[i] != null) {
+
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imagenizquierda);
+            txtuno.setText(arrayNombres1[i]);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imagenderecha);
-        }else {
-        termino();
+            txtdos.setText(arrayNombres2[i]);
+            txttres.setText(arrayNombres1[randomico(i)]);
+            txtcuatro.setText(arrayNombres1[randomico(i)]);
+            txtcinco.setText(arrayNombres1[randomico(i)]);
+        } else {
+            termino();
+        }
     }
+
+    public int randomico(int indice) {
+
+        int ran = 0;
+        ran = (int) (Math.random() * 3) + 1;
+        if (ran == indice) {
+            randomico(indice);
+        } else {
+            return ran;
+        }
+        return ran;
     }
-    private void termino(){
+
+    private void termino() {
         imagenizquierda.setImageResource(R.color.blanco);
         imagenizquierda.setEnabled(false);
         imagenderecha.setEnabled(false);
         imagenderecha.setImageResource(R.color.blanco);
-
-        cargar.setText("TERMINÓ EL NIVEL 1");
+        txtuno.setText("");
+        txtdos.setText("");
+        txttres.setText("");
+        txtcuatro.setText("");
+        txtcinco.setText("");
+        cargar.setText("TERMINÓ EL NIVEL 3");
         LayoutInflater myInflator = getLayoutInflater();
         View myLayout = myInflator.inflate(R.layout.felicitaciones, (ViewGroup) findViewById(R.id.lay_felicitaciones));
         felicitaciones = MediaPlayer.create(getApplicationContext(), R.raw.felicitaciones);

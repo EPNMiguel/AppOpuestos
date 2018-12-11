@@ -1,33 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".nivel3">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/ImgView31"/>
-        <ImageView
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/imgcambio"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_gravity="center" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/ImgView32"/>
-        
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/imgcambio2"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btncargarImagen3"
-        android:text="Cargar Imagen"/>
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="15dp"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:id="@+id/txtuno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/txtdos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/txttres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:layout_weight="1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/txtcuatro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="25dp"  />
+
+        <TextView
+            android:id="@+id/txtcinco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:textSize="25dp"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/btncambio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="EMPEZAR" />
+    </LinearLayout>
 
 </LinearLayout>
