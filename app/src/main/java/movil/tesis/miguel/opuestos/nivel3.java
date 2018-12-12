@@ -130,6 +130,7 @@ public class nivel3 extends AppCompatActivity {
         Toast myToast = new Toast(getApplicationContext());
         myToast.setDuration(Toast.LENGTH_LONG);
         myToast.setGravity(Gravity.FILL, 0, 0);
+        //algo
         myToast.setView(myLayout);
         myToast.show();
         cargar.setEnabled(false);
