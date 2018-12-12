@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/lay_felicitaciones">
+    android:id="@+id/lay_felicitaciones"
+    android:background="@color/blanco">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:id="@+id/imgfelicitaciones"
-        android:src="@drawable/bien"/>
+        android:src="@drawable/finalizar"
+        android:layout_gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class nivel2 extends AppCompatActivity {
     public String[] arrayNombres2 = new String[20];
     public int i = 0;
     public Button bt1;
+    public int random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,28 @@ public class nivel2 extends AppCompatActivity {
         txtpar2 = (TextView) findViewById(R.id.txtpar2);
         txtdistractor1 = (TextView) findViewById(R.id.txtdistractor1);
 
+        imgpar1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTTS.speak(arrayNombres1[i], TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
+
+        imgpar2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTTS.speak(arrayNombres2[i], TextToSpeech.QUEUE_FLUSH, null);
+                acerto();
+            }
+        });
+        imgdistractor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTTS.speak(arrayNombres2[random], TextToSpeech.QUEUE_FLUSH, null);
+                fallo();
+            }
+        });
+
         bt1 = (Button) findViewById(R.id.btncambio);
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +130,7 @@ public class nivel2 extends AppCompatActivity {
         bt1.setText("CAMBIAR");
         i++;
         if (arrayNombres1[i] != null) {
-            int random = randomico(i);
+            random = randomico(i);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imgpar1);
             txtpar1.setText(arrayNombres1[i]);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imgpar2);
@@ -118,16 +142,47 @@ public class nivel2 extends AppCompatActivity {
         }
     }
 
-    public int randomico(int indice) {
+    public static int randomico(int indice) {
 
         int ran = 0;
-        ran = (int) (Math.random() * 3) + 1;
+        ran = (int) (Math.random() * 4) + 1;
         if (ran == indice) {
-            randomico(indice);
+            return randomico(indice);
         } else {
             return ran;
         }
-        return ran;
+
+    }
+
+    public void acerto() {
+        LayoutInflater myInflator = getLayoutInflater();
+        View myLayout = myInflator.inflate(R.layout.bien, (ViewGroup) findViewById(R.id.lay_bien));
+        Toast myToast = new Toast(getApplicationContext());
+        myToast.setGravity(Gravity.FILL, 0, 0);
+        myToast.setDuration(Toast.LENGTH_SHORT);
+        myToast.setView(myLayout);
+        myToast.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 3500);
+
+    }
+
+    public void fallo() {
+        LayoutInflater myInflator = getLayoutInflater();
+        View myLayout = myInflator.inflate(R.layout.mal, (ViewGroup) findViewById(R.id.ly_mal));
+        Toast myToast = new Toast(getApplicationContext());
+        myToast.setDuration(Toast.LENGTH_SHORT);
+        myToast.setGravity(Gravity.FILL, 0, 0);
+        myToast.setView(myLayout);
+        myToast.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 3500);
     }
 
     private void termino() {
@@ -147,6 +202,7 @@ public class nivel2 extends AppCompatActivity {
         felicitaciones.start();
         Toast myToast = new Toast(getApplicationContext());
         myToast.setDuration(Toast.LENGTH_LONG);
+        myToast.setGravity(Gravity.FILL, 0, 0);
         myToast.setView(myLayout);
         myToast.show();
         bt1.setEnabled(false);
