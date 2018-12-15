@@ -1,12 +1,15 @@
 package movil.tesis.miguel.opuestos;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +29,14 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 public class nivel3 extends AppCompatActivity {
     ImageView imagenizquierda, imagenderecha;
-    TextView txtuno, txtdos, txttres, txtcuatro, txtcinco;
+    TextView txtuno, txtdos, txttres, txtcuatro, txtcinco, txtcambio, txtcambio2;
     Button cargar;
     String texto = "";
+    private TextToSpeech mTTS;
     public String[] arrayNombres1 = new String[20];
     public String[] arrayNombres2 = new String[20];
     public MediaPlayer felicitaciones;
@@ -66,6 +71,18 @@ public class nivel3 extends AppCompatActivity {
             Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());
         }
 
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(new Locale("spa", "MEX"));
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Toast.makeText(nivel3.this, "Idioma no Válido", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+        });
         imagenizquierda = (ImageView) findViewById(R.id.imgcambio);
         imagenderecha = (ImageView) findViewById(R.id.imgcambio2);
         txtuno = (TextView) findViewById(R.id.txtuno);
@@ -73,6 +90,9 @@ public class nivel3 extends AppCompatActivity {
         txttres = (TextView) findViewById(R.id.txttres);
         txtcuatro = (TextView) findViewById(R.id.txtcuatro);
         txtcinco = (TextView) findViewById(R.id.txtcinco);
+        txtcambio = (TextView) findViewById(R.id.txtcambio);
+        txtcambio2 = (TextView) findViewById(R.id.txtcambio2);
+
         cargar = (Button) findViewById(R.id.btncambio);
         cargar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +102,80 @@ public class nivel3 extends AppCompatActivity {
         });
 
 
+        txtuno.setOnLongClickListener(longClickListener);
+        txtdos.setOnLongClickListener(longClickListener);
+        txttres.setOnLongClickListener(longClickListener);
+        txtcuatro.setOnLongClickListener(longClickListener);
+        txtcinco.setOnLongClickListener(longClickListener);
+        txtcambio.setOnDragListener(dragListener);
+        txtcambio2.setOnDragListener(dragListener2);
+
     }
 
+    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            ClipData clipData = ClipData.newPlainText("", "");
+            View.DragShadowBuilder myShadowbuilder = new View.DragShadowBuilder(v);
+            v.startDrag(clipData, myShadowbuilder, v, 0);
+            return true;
+        }
+    };
+
+    View.OnDragListener dragListener = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+
+            int dragevent = event.getAction();
+
+            switch (dragevent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    break;
+                case DragEvent.ACTION_DROP:
+                    final View view = (View) event.getLocalState();
+                    if (view.getId() == R.id.txtuno) {
+                        txtcambio.setText(txtuno.getText().toString());
+                        mTTS.speak(txtuno.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    break;
+            }
+
+
+            return true;
+        }
+    };
+
+    View.OnDragListener dragListener2 = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+
+            int dragevent = event.getAction();
+
+            switch (dragevent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    break;
+                case DragEvent.ACTION_DROP:
+                    final View view = (View) event.getLocalState();
+                    if (view.getId() == R.id.txtdos) {
+                        txtcambio2.setText(txtdos.getText().toString());
+                        mTTS.speak(arrayNombres2[i], TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    break;
+            }
+
+
+            return true;
+        }
+    };
+
     public void cargarImg() {
+        cargar.setText("CAMBIAR");
         i++;
         if (arrayNombres1[i] != null) {
 
@@ -95,6 +186,8 @@ public class nivel3 extends AppCompatActivity {
             txttres.setText(arrayNombres1[randomico(i)]);
             txtcuatro.setText(arrayNombres1[randomico(i)]);
             txtcinco.setText(arrayNombres1[randomico(i)]);
+            txtcambio.setText("");
+            txtcambio2.setText("");
         } else {
             termino();
         }
