@@ -90,25 +90,13 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 actualizar();
-            }
-        });
-        descargar = (Button) findViewById(R.id.descargarImg);
-        descargar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    for (int i = 0; i < arrayURL1.length; i++) {
-                        Picasso.get().load(arrayURL1[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres1[i] + ".png"));
-                        Picasso.get().load(arrayURL2[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres2[i] + ".png"));
-                    }
-                } catch (Exception e) {
-                    Log.e("descarga: ", "error en picasso");
 
+                for(int g=0;g<4;g++) {
+                    descargar();
                 }
-
-
             }
         });
+
 
     }
 
@@ -274,5 +262,17 @@ public class Principal extends AppCompatActivity {
         };
     }
 
+    public void descargar(){
+        try {
+            for (int i = 0; i < arrayURL1.length; i++) {
+                Picasso.get().load(arrayURL1[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres1[i] + ".png"));
+                Picasso.get().load(arrayURL2[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres2[i] + ".png"));
+            }
+        } catch (Exception e) {
+            Log.e("descarga: ", "error en picasso");
+
+        }
+
+    }
 
 }

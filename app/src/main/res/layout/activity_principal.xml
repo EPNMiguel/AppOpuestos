@@ -22,6 +22,13 @@
             android:layout_height="180dp"
             android:src="@drawable/fondo" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/actualizar"
+            android:layout_height="wrap_content"
+            android:text="Actualizar"
+            />
+
 
     </LinearLayout>
 
@@ -33,18 +40,7 @@
 
         android:gravity="center">
 
-           <Button
-               android:layout_width="wrap_content"
-               android:id="@+id/actualizar"
-               android:layout_height="wrap_content"
-               android:text="Actualizar"
-               />
-           <Button
-               android:layout_width="wrap_content"
-               android:id="@+id/descargarImg"
-               android:layout_height="wrap_content"
-               android:text="descargar imágenes "
-               />
+        
 
 
         <Button
@@ -52,17 +48,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="NIVEL 1" />
+            android:text="APRENDIZAJE DE OPUESTOS" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NIVEL 2"
+            android:text="OPCIÓN MÚLTIPLE"
             android:id="@+id/nivel2"
             android:layout_weight="1"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NIVEL 3"
+            android:text="COINCIDE CON EL CORRECTO"
             android:id="@+id/nivel3"
             android:layout_weight="1"/>
 
