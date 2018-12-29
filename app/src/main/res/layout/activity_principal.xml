@@ -4,43 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blanco"
     android:orientation="vertical"
-    tools:context=".Principal"
-    android:background="@color/blanco">
+    tools:context=".Principal">
 
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingVertical="20dp"
         android:orientation="horizontal">
 
 
         <ImageView
             android:layout_width="180dp"
             android:layout_height="180dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/fondo" />
 
         <Button
-            android:layout_width="wrap_content"
             android:id="@+id/actualizar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Actualizar"
-            />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:text="Descargar Imágenes" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-       <LinearLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center"
+        android:gravity="center"
 
-        android:gravity="center">
-
-        
+        android:orientation="horizontal">
 
 
         <Button
@@ -49,18 +50,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="APRENDIZAJE DE OPUESTOS" />
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OPCIÓN MÚLTIPLE"
             android:id="@+id/nivel2"
-            android:layout_weight="1"/>
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="COINCIDE CON EL CORRECTO"
+            android:layout_weight="1"
+            android:text="OPCIÓN MÚLTIPLE" />
+
+        <Button
             android:id="@+id/nivel3"
-            android:layout_weight="1"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="COINCIDE CON EL CORRECTO" />
 
     </LinearLayout>
 

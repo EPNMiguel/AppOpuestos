@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,10 +91,7 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 actualizar();
-
-                for(int g=0;g<4;g++) {
-                    descargar();
-                }
+                descargar();
             }
         });
 
@@ -262,7 +260,7 @@ public class Principal extends AppCompatActivity {
         };
     }
 
-    public void descargar(){
+    public void descargar() {
         try {
             for (int i = 0; i < arrayURL1.length; i++) {
                 Picasso.get().load(arrayURL1[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres1[i] + ".png"));
@@ -272,6 +270,11 @@ public class Principal extends AppCompatActivity {
             Log.e("descarga: ", "error en picasso");
 
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 5000);
 
     }
 
