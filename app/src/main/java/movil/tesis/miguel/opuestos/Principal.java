@@ -136,7 +136,7 @@ public class Principal extends AppCompatActivity {
                     JSONObject obj = new JSONObject("{\"opuestos\":" + texto + "}");
                     JSONArray opuesto = obj.getJSONArray("opuestos");
                     int n = opuesto.length();
-                    for (int i = 1; i < n; i++) {
+                    for (int i = 0; i < n; i++) {
                         JSONObject img = opuesto.getJSONObject(i);
                         arrayURL1[i] = img.getString("url_im1");
                         arrayURL2[i] = img.getString("url_im2");
@@ -261,6 +261,7 @@ public class Principal extends AppCompatActivity {
     }
 
     public void descargar() {
+
         try {
             for (int i = 0; i < arrayURL1.length; i++) {
                 Picasso.get().load(arrayURL1[i]).into(picassoImageTarget(getApplicationContext(), "picasso", arrayNombres1[i] + ".png"));
@@ -270,11 +271,6 @@ public class Principal extends AppCompatActivity {
             Log.e("descarga: ", "error en picasso");
 
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            }
-        }, 5000);
 
     }
 

@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/txtdos"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/txttres"
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/txtcuatro"
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/txtcinco"
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout

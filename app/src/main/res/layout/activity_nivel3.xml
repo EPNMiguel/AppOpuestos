@@ -40,7 +40,7 @@
                     android:paddingVertical="10dp"
                     android:clickable="true"
                     android:gravity="center"
-                    android:textSize="30dp" />
+                    android:textSize="30sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -67,7 +67,7 @@
                     android:gravity="center"
                     android:paddingVertical="10dp"
 
-                    android:textSize="30dp"  />
+                    android:textSize="30sp"  />
             </LinearLayout>
         </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtdos"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txttres"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtcuatro"
@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtcinco"
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="25dp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout

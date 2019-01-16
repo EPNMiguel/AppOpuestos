@@ -32,7 +32,7 @@ import java.util.Locale;
 public class nivel2 extends AppCompatActivity {
 
     public ImageView imgpar1, imgpar2, imgdistractor;
-    public TextView txtpar1, txtpar2, txtdistractor1;
+    public TextView txtpar1, txtpar2, txtdistractor1, grisito;
     private TextToSpeech mTTS;
     public MediaPlayer felicitaciones;
     public String texto = "";
@@ -41,6 +41,7 @@ public class nivel2 extends AppCompatActivity {
     public int i = 0;
     public Button bt1;
     public int random;
+    public static int longitud =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +62,12 @@ public class nivel2 extends AppCompatActivity {
         try {
             JSONObject obj = new JSONObject("{\"opuestos\":" + texto + "}");
             JSONArray opuesto = obj.getJSONArray("opuestos");
-            int n = opuesto.length();
-            for (int i = 1; i < n; i++) {
+            longitud = opuesto.length();
+            for (int i = 1; i < longitud; i++) {
                 JSONObject img = opuesto.getJSONObject(i);
                 arrayNombres1[i] = img.getString("opuesto_im1");
                 arrayNombres2[i] = img.getString("opuesto_im2");
+
             }
         } catch (Exception e) {
             Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());
@@ -85,6 +87,7 @@ public class nivel2 extends AppCompatActivity {
             }
         });
 
+        grisito = (TextView) findViewById(R.id.imggrisito);
         imgpar1 = (ImageView) findViewById(R.id.par1);
         imgpar2 = (ImageView) findViewById(R.id.par2);
         imgdistractor = (ImageView) findViewById(R.id.distractor1);
@@ -126,8 +129,11 @@ public class nivel2 extends AppCompatActivity {
     }
 
 
+
     public void cargarImg() {
         bt1.setText("CAMBIAR");
+        grisito.setText("");
+
         i++;
         if (arrayNombres1[i] != null) {
             random = randomico(i);
@@ -145,7 +151,7 @@ public class nivel2 extends AppCompatActivity {
     public static int randomico(int indice) {
 
         int ran = 0;
-        ran = (int) (Math.random() * 4) + 1;
+        ran = (int) (Math.random() * longitud-1) + 1;
         if (ran == indice) {
             return randomico(indice);
         } else {

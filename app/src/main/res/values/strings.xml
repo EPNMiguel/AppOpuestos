@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Opuestos</string>
     <string name="title_activity_leer_json">leerJSON</string>
+    <string name="descripcionN1">NIVEL 1 OPCIÓN MÚLTIPLE \n Permite identificar, reconocer y comparar elementos \n INSTRUCCIONES: Al hacer clic en la imagenes ésta se escucha</string>
+    <string name="descripcionN2">NIVEL 2 OPCIÓN MÚLTIPLE \n Permite medir el aprendizaje adquirido en el nivel anterior seleccionando la opción correcta \n INSTRUCCIONES: Hacer click en el opuestos correspondiente</string>
+    <string name="descripcionN3">NIVEL 3 COINCIDE CON EL CORRECTO \n Permite asociar las palabras con las imágenes \n INSTRUCCIONES: Ten aplastada la palabra y arrástrala con su imagen correspondiente</string>
 </resources>

@@ -41,6 +41,7 @@ public class nivel3 extends AppCompatActivity {
     public String[] arrayNombres2 = new String[20];
     public MediaPlayer felicitaciones;
     public int i = 0;
+    public static int longitud =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +62,13 @@ public class nivel3 extends AppCompatActivity {
         try {
             JSONObject obj = new JSONObject("{\"opuestos\":" + texto + "}");
             JSONArray opuesto = obj.getJSONArray("opuestos");
-            int n = opuesto.length();
-            for (int i = 1; i < n; i++) {
+            longitud = opuesto.length();
+            for (int i = 0; i < longitud; i++) {
                 JSONObject img = opuesto.getJSONObject(i);
                 arrayNombres1[i] = img.getString("opuesto_im1");
                 arrayNombres2[i] = img.getString("opuesto_im2");
+
+
             }
         } catch (Exception e) {
             Log.d("Parsear", "Error al parsear  " + e.getLocalizedMessage());
@@ -139,6 +142,11 @@ public class nivel3 extends AppCompatActivity {
                     if (view.getId() == R.id.txtuno) {
                         txtcambio.setText(txtuno.getText().toString());
                         mTTS.speak(txtuno.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                        acerto();
+                    }
+                    else{
+
+                        fallo();
                     }
                     break;
             }
@@ -165,6 +173,9 @@ public class nivel3 extends AppCompatActivity {
                     if (view.getId() == R.id.txtdos) {
                         txtcambio2.setText(txtdos.getText().toString());
                         mTTS.speak(arrayNombres2[i], TextToSpeech.QUEUE_FLUSH, null);
+                        acerto();
+                    } else{
+                        fallo();
                     }
                     break;
             }
@@ -177,6 +188,7 @@ public class nivel3 extends AppCompatActivity {
     public void cargarImg() {
         cargar.setText("CAMBIAR");
         i++;
+
         if (arrayNombres1[i] != null) {
 
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imagenizquierda);
@@ -191,18 +203,49 @@ public class nivel3 extends AppCompatActivity {
         } else {
             termino();
         }
+
     }
 
     public static int randomico(int indice) {
 
         int ran = 0;
-        ran = (int) (Math.random() * 4) + 1;
+        ran = (int) (Math.random() * longitud-1) + 1;
         if (ran == indice) {
             return randomico(indice);
         } else {
             return ran;
         }
 
+    }
+
+    public void acerto() {
+        LayoutInflater myInflator = getLayoutInflater();
+        View myLayout = myInflator.inflate(R.layout.bien, (ViewGroup) findViewById(R.id.lay_bien));
+        Toast myToast = new Toast(getApplicationContext());
+        myToast.setGravity(Gravity.FILL, 0, 0);
+        myToast.setDuration(Toast.LENGTH_SHORT);
+        myToast.setView(myLayout);
+        myToast.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 3500);
+
+    }
+    public void fallo() {
+        LayoutInflater myInflator = getLayoutInflater();
+        View myLayout = myInflator.inflate(R.layout.mal, (ViewGroup) findViewById(R.id.ly_mal));
+        Toast myToast = new Toast(getApplicationContext());
+        myToast.setDuration(Toast.LENGTH_SHORT);
+        myToast.setGravity(Gravity.FILL, 0, 0);
+        myToast.setView(myLayout);
+        myToast.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 3500);
     }
 
     private void termino() {
