@@ -25,7 +25,6 @@
         <activity android:name=".nivel1" />
         <activity android:name=".nivel2" />
         <activity android:name=".nivel3"></activity>
-        <activity android:name=".leerJSON"></activity>
 
     </application>
 

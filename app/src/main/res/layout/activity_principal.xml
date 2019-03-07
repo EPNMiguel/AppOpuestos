@@ -30,7 +30,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="right"
-            android:text="Descargar Imágenes" />
+            android:text="Actualizar"
+            android:drawableLeft="@drawable/ico_descargar" />
 
 
     </RelativeLayout>

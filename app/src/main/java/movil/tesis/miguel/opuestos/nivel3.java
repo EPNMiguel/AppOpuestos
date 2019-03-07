@@ -33,7 +33,7 @@ import java.util.Locale;
 
 public class nivel3 extends AppCompatActivity {
     ImageView imagenizquierda, imagenderecha;
-    TextView txtuno, txtdos, txttres, txtcuatro, txtcinco, txtcambio, txtcambio2;
+    TextView txtuno, txtdos, txttres, txtcuatro, txtcinco, txtcambio, txtcambio2,grisito;
     Button cargar;
     String texto = "";
     private TextToSpeech mTTS;
@@ -86,6 +86,7 @@ public class nivel3 extends AppCompatActivity {
                 }
             }
         });
+        grisito = (TextView) findViewById(R.id.imggrisito);
         imagenizquierda = (ImageView) findViewById(R.id.imgcambio);
         imagenderecha = (ImageView) findViewById(R.id.imgcambio2);
         txtuno = (TextView) findViewById(R.id.txtuno);
@@ -187,6 +188,7 @@ public class nivel3 extends AppCompatActivity {
 
     public void cargarImg() {
         cargar.setText("CAMBIAR");
+        grisito.setText("");
         i++;
 
         if (arrayNombres1[i] != null) {

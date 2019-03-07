@@ -33,7 +33,7 @@ import java.util.Locale;
 public class nivel1 extends AppCompatActivity {
 
     ImageView imagenizquierda, imagenderecha;
-    TextView txtizquierda, txtderecha;
+    TextView txtizquierda, txtderecha,grisito;
     Button cargar;
     String texto = "";
     public String[] arrayNombres1 = new String[20];
@@ -84,6 +84,7 @@ public class nivel1 extends AppCompatActivity {
                 }
             }
         });
+        grisito = (TextView) findViewById(R.id.imggrisito);
         imagenizquierda = (ImageView) findViewById(R.id.imgcambio);
         imagenderecha = (ImageView) findViewById(R.id.imgcambio2);
         txtizquierda = (TextView) findViewById(R.id.txtcambio);
@@ -115,15 +116,18 @@ public class nivel1 extends AppCompatActivity {
 
     public void cargarImg() {
         cargar.setText("CAMBIAR");
+        grisito.setText("");
         i++;
         if (arrayNombres1[i] != null) {
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres1[i] + ".png")).into(imagenizquierda);
             txtizquierda.setText(arrayNombres1[i]);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[i] + ".png")).into(imagenderecha);
             txtderecha.setText(arrayNombres2[i]);
+
         } else {
             termino();
         }
+
     }
 
     private void termino() {

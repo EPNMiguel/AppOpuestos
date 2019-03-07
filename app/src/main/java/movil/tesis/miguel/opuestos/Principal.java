@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -63,6 +64,8 @@ public class Principal extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         n1 = (Button) findViewById(R.id.nivel1);
+//        Typeface font = Typeface.createFromAsset(getAssets(),"twcenmt.ttf");
+//        n1.setTypeface(font);
         n1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

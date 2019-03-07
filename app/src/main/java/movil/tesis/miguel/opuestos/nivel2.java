@@ -133,7 +133,6 @@ public class nivel2 extends AppCompatActivity {
     public void cargarImg() {
         bt1.setText("CAMBIAR");
         grisito.setText("");
-
         i++;
         if (arrayNombres1[i] != null) {
             random = randomico(i);
@@ -143,6 +142,7 @@ public class nivel2 extends AppCompatActivity {
             txtpar2.setText(arrayNombres2[i]);
             Picasso.get().load(new File("/data/data/movil.tesis.miguel.opuestos/app_picasso/" + arrayNombres2[random] + ".png")).into(imgdistractor);
             txtdistractor1.setText(arrayNombres2[random]);
+
         } else {
             termino();
         }

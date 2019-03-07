@@ -12,11 +12,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageView
+    <TextView
         android:id="@+id/imggrisito"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@color/grisito"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/descripcionN2"
+        android:textSize="30sp"/>
 
 
     <LinearLayout
